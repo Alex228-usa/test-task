@@ -8,7 +8,7 @@
   </template>
   
   <script lang="ts" setup>
-  import { useFetch } from '#app';
+  import { useFetch } from 'nuxt/app';
   import { useRoute } from 'vue-router';
   
   const route = useRoute();

@@ -1,11 +1,18 @@
-import { ref, onMounted } from 'vue';
-import { useFetch } from '#app';
+import { ref } from 'vue';
+import { useFetch } from 'nuxt/app';
+
+interface Product {
+  id: string;   
+  image: string;
+  title: string;
+  price: number;
+}
 
 export const useProducts = () => {
-  const products = ref([]);
+  const products = ref<Product[]>([]);  // Используем Product[]
   const isLoading = ref(false);
   const page = ref(1);
-  const limit = ref(12); // Количество товаров на странице
+  const limit = ref(10);
   const totalProducts = ref(0);
   const filters = ref({
     title: '',
@@ -24,23 +31,15 @@ export const useProducts = () => {
         title: filters.value.title,
       },
     });
+
     if (error.value) {
-      console.error('Ошибка при загрузке товаров:', error.value);
+      console.error('Error fetching products', error.value);
     } else {
-      products.value = data.value;
+      products.value = data.value as Product[]; // Приведение к типу Product[]
       totalProducts.value = data.value.length;
     }
     isLoading.value = false;
   };
 
-  const loadMoreProducts = async () => {
-    page.value++;
-    await fetchProducts();
-  };
-
-  onMounted(() => {
-    fetchProducts();
-  });
-
-  return { products, isLoading, fetchProducts, loadMoreProducts, filters, page, totalProducts };
+  return { products, isLoading, fetchProducts, filters, page, totalProducts };
 };

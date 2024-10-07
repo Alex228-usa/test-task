@@ -10,7 +10,7 @@
   </template>
   
   <script lang="ts" setup>
-  import { useProducts } from '@/composables/useProducts';
+  import { useProducts } from '../composables/useProducts';
   const { filters, fetchProducts } = useProducts();
   
   const applyFilters = () => {
